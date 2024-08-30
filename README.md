@@ -20,7 +20,7 @@ The netowrk I used consists of:
 
 As for the reinforcemtn technique, the rewards I give to the network (or snake, if you prefer) are:
 - -10 if the snake dies
-- -1 for each time step
+- -0.1 for each time step
 - +1 if the snake eats an apple
 
 It's amaxing to see how from this simple immediate rewards the network is able to refine a more complex and long term policy.
