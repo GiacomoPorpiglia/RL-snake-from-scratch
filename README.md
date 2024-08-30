@@ -30,7 +30,7 @@ It's amaxing to see how from this simple immediate rewards the network is able t
 
 ## Results
 The results are promising, and they would probably be even better with some more training.
-The network played roughly 900.000 games, reaching a best score of 47 on training. 
+The network played roughly 900,000 games, reaching a best score of 47 on training. 
 <br>
 I also run about 10000 games of playing to have a estimate of the score distribution, and this is the result:
 <br>
