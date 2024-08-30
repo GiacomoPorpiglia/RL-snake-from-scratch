@@ -5,6 +5,8 @@
 In this project, I built a reinforcement learning environment to teach a Neural Network to play the game of Snake, through Reinforcement Learning.
 Specifically, I used Q-Learning as RL algorithm. <br>
 <b>The entire code is written in pure C++, without the use of any ML libraries.</b>
+<br>
+The code is in the 'coding' folder, while in the src there are some SFML dipendencies (the library I used for graphics).
 
 ## Training
 To train the network, I used an epsilon-greedy policy (also known as curiosity based exploration): we set a value epsilon between 0 and 1, and this is the probability of choosing a random action, instead of the best one that the network suggests. This way, we can explore the environment more and learn faster, especially in the initial steps of the training.

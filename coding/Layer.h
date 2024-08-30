@@ -6,7 +6,6 @@
 #include <fstream>
 #include <sstream>
 #include "types.h"
-#include "RMSprop.h"
 #include "Adam.h"
 
 
