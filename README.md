@@ -40,10 +40,10 @@ As you can see, the average is around 30, which I'm happy with, considering that
 ## How to use
 To use this project, you can clone it and build the executable using this command: 
 ```
-git clone ......
-cd .....
+git clone https://github.com/GiacomoPorpiglia/RL-snake-from-scratch
+cd RL-snake-from-scratch
+make clean
 make
-
 ```
 
 To execute, there are several flags to choose several network parameters and more:

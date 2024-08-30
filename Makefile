@@ -1,5 +1,5 @@
 DLL_DIR = dll-files
-EXECUTABLE = main
+EXECUTABLE = RLsnake
 
 # Default target to build everything
 all: $(EXECUTABLE)
