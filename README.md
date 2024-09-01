@@ -41,7 +41,7 @@ I also run about 10000 games of playing to have a estimate of the score distribu
 As you can see, the average is around 30, which I'm happy with, considering that it could be trained a lot more.
 <br>
 Now take a look at an example of game:
-<img src="./imgs/play.gif" width="80%" />
+<img src="./imgs/play.gif" width="60%" />
 
 
 ## How to use
