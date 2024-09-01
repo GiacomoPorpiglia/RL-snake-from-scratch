@@ -3,15 +3,16 @@
 ## Introduction
 
 In this project, I built a reinforcement learning environment to teach a Neural Network to play the game of Snake, through Reinforcement Learning.
-Specifically, I used Q-Learning as RL algorithm. <br>
+Specifically, <b>I used Q-Learning as RL algorithm.</b>
+<br>
 <b>The entire code is written in pure C++, without the use of any ML libraries.</b>
 <br>
 The code is in the 'coding' folder, while in the src there are some SFML dipendencies (the library I used for graphics).
 
 ## Training
-To train the network, I used an epsilon-greedy policy (also known as curiosity based exploration): we set a value epsilon between 0 and 1, and this is the probability of choosing a random action, instead of the best one that the network suggests. This way, we can explore the environment more and learn faster, especially in the initial steps of the training.
+To train the network, I used an <b>epsilon-greedy policy</b> (also known as curiosity based exploration): we set a value epsilon between 0 and 1, and this is the probability of choosing a random action, instead of the best one that the network suggests. This way, we can explore the environment more and learn faster, especially in the initial steps of the training.
 <br>
-I also used the Adam optimizer paired with backpropagation, which resulted in a more controlled convergence.
+I also used the <b>Adam optimizer paired with backpropagation</b>, which resulted in a more controlled convergence.
 <br>
 The netowrk I used consists of:
 -  9 inputs
@@ -20,7 +21,7 @@ The netowrk I used consists of:
 - The output layer with 3 neurons (for left, right and forward actions).
 <br>
 
-As for the reinforcemtn technique, the rewards I give to the network (or snake, if you prefer) are:
+As for the reinforcement technique, the rewards I give to the network (or snake, if you prefer) are:
 - -10 if the snake dies
 - -0.1 for each time step
 - +1 if the snake eats an apple
@@ -38,6 +39,10 @@ I also run about 10000 games of playing to have a estimate of the score distribu
 <img alt="Score distribution" src="./imgs/distribution.png" style="width:80%;">
 <br>
 As you can see, the average is around 30, which I'm happy with, considering that it could be trained a lot more.
+<br>
+Now take a look at an example of game:
+<img src="./imgs/play.gif" width="80%" />
+
 
 ## How to use
 To use this project, you can clone it and build the executable using this command: 
@@ -58,11 +63,11 @@ To execute, there are several flags to choose several network parameters and mor
 Some examples of usage are:
 
 ```
-.\main.exe --mode play --path ./net
+.\RLsnake.exe --mode play --path ./net
 
 or 
 
-.\main.exe --mode train --epsilon 0.1 --learnrate 0.001 --batchsize 64 --path ./net
+.\RLsnake.exe --mode train --epsilon 0.1 --learnrate 0.001 --batchsize 64 --path ./net
 ```
 
 

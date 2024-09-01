@@ -9,11 +9,11 @@ $(EXECUTABLE): compile link copy-dlls
 
 # Compile the C++ files into object files
 compile:
-	g++ -Isrc/include -c coding/*.cpp
+	g++ -Isrc/include -O3 -c coding/*.cpp
 
 # Link the object files to create the final executable
 link:
-	g++ *.o -o $(EXECUTABLE) -Lsrc/lib -L$(DLL_DIR) -lsfml-graphics -lsfml-window -lsfml-system -lopengl32 -lsfml-audio
+	g++ -O3 *.o -o $(EXECUTABLE) -Lsrc/lib -L$(DLL_DIR) -lsfml-graphics -lsfml-window -lsfml-system -lopengl32 -lsfml-audio
 
 # Copy the DLL files from dll-files directory to the current directory
 copy-dlls:

@@ -194,7 +194,7 @@ void updateSnake(Snake& s, Network& network, ReplayBuffer& buffer, bool train) {
     } else {
         reward = MOVE_REWARD;
     }
-    if (s.stepsAlive > 65) {
+    if (s.stepsAlive > 80) {
         final = true;
     }
 
@@ -212,9 +212,9 @@ void updateSnake(Snake& s, Network& network, ReplayBuffer& buffer, bool train) {
             network.save(); // save the network every 1000 games
         }
 
-        network.epsilon -= network.epsilon / 250000; //gradually decrease epsilon
+        // network.epsilon -= network.epsilon / 250000; //gradually decrease epsilon
         if(train)
-            network.epsilon = std::max(network.epsilon, 0.05);
+            network.epsilon = std::max(network.epsilon, 0.0);
 
         if(train) {
             auto batch = buffer.sampleBatch();

@@ -23,7 +23,7 @@ class ReplayBuffer {
         ReplayBuffer(int bs) {
             buffer.clear();
             gamma = 0.95;
-            maxSize = 1000;
+            maxSize = 2000;
             batchSize = bs;
         }
 
