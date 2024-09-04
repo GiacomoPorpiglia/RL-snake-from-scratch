@@ -5,8 +5,8 @@
 typedef struct {
     int xpos;
     int ypos;
-    int tailX[GRID_SIZE * GRID_SIZE - 1];
-    int tailY[GRID_SIZE * GRID_SIZE - 1];
+    int tailX[GRID_SIZE * GRID_SIZE];
+    int tailY[GRID_SIZE * GRID_SIZE];
     int dir;
 
     int prevTailEndX;

@@ -42,8 +42,6 @@ bool isDead(Snake& s) {
         if(s.xpos == s.tailX[i] && s.ypos == s.tailY[i])
             return true;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        return true;
 
     return false;
 }
@@ -354,10 +352,6 @@ int main(int argc, char* argv[]) {
                         // Toggle the frame rate
                         frameRate = (frameRate == 60) ? 10 : 60;
                         window.setFramerateLimit(frameRate);
-                    }
-                    //if S is pressed, save the network
-                    if (event.key.code == sf::Keyboard::S) {
-                        // network.save();
                     }
                 }
             }
