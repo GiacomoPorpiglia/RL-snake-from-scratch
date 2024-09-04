@@ -18,7 +18,7 @@ The netowrk I used consists of:
 -  9 inputs
 - One hidden layer with 100 neurons
 - One hidden layer with 50 neurons
-- The output layer with 3 neurons (for left, right and forward actions).
+- The output layer with 3 neurons (for left, forward and right actions).
 <br>
 
 As for the reinforcement technique, the rewards I give to the network (or snake, if you prefer) are:
@@ -26,7 +26,7 @@ As for the reinforcement technique, the rewards I give to the network (or snake,
 - -0.1 for each time step
 - +1 if the snake eats an apple
 
-It's amaxing to see how from this simple immediate rewards the network is able to refine a more complex and long term policy.
+It's amazing to see how from this simple immediate rewards the network is able to refine a more complex and long term policy.
 
 
 ## Results

@@ -6,9 +6,6 @@
 #include <random>
 #include <algorithm>
 
-bool compareByFirst(const ReplayRecord &a, const ReplayRecord &b) {
-    return std::get<2>(a) < std::get<2>(b);
-}
 
 class ReplayBuffer {
 
@@ -61,7 +58,15 @@ class ReplayBuffer {
             std::mt19937 generator(rd());
             
             std::vector<std::tuple<ReplayRecord, double>> batch;
- 
+
+            //always be sure to insert a final action in the batch
+            //this is done because, especially when the snake becomes smarter, the number of final actions
+            //in the buffer will be very small compared to the other actions, and that imbalance could bring
+            //the network to not learn important features/concepts of the game, such as getting stuck in a dead
+            //end created by the tail (which occurs only when the snake is pretty big already)
+            batch.push_back(std::make_tuple(buffer[buffer.size()-1], rewards[rewards.size()-1]));
+            buffer.pop_back();
+            rewards.pop_back();
             while(batch.size() < batchSize) {
 
                 std::uniform_int_distribution<> dist(0, buffer.size() - 1);

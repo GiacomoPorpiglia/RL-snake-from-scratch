@@ -9,7 +9,6 @@
 #include <random>
 #include <fstream>
 
-//0.055 epsilon
 int counter = 0;
 
 void drawFrame(sf::RenderWindow& window, Snake& s) {
@@ -113,7 +112,7 @@ State getState(Snake& s) {
         leftDist = n; rightDist = st; forwardDist = e;
     }
     
-    //create input vector
+    //create input vector (normalizing the values)
     std::vector<double> inputs = {
         (double) s.xpos      / GRID_SIZE,
         (double) s.ypos      / GRID_SIZE,
@@ -183,22 +182,23 @@ void updateSnake(Snake& s, Network& network, ReplayBuffer& buffer, bool train) {
     State nextState = getState(s);
     double reward = 0;
     bool final = false;
+    bool dead = isDead(s);
     if (s.xpos == s.appleX && s.ypos == s.appleY) {
         eat(s);
         s.stepsAlive = 0;
         reward = EAT_REWARD;
     }
-    else if (isDead(s)) {
+    else if (dead) {
         reward = DIE_REWARD;
         final = true;
     } else {
         reward = MOVE_REWARD;
     }
-    if (s.stepsAlive > 80) {
+    if (s.stepsAlive > 100) {
         final = true;
     }
 
-    buffer.addRecord(currentState, (Action) actionIndex, reward, nextState, final, network);
+    buffer.addRecord(currentState, (Action) actionIndex, reward, nextState, dead, network);
 
     if (final) {
         counter++;
@@ -212,9 +212,15 @@ void updateSnake(Snake& s, Network& network, ReplayBuffer& buffer, bool train) {
             network.save(); // save the network every 1000 games
         }
 
-        // network.epsilon -= network.epsilon / 250000; //gradually decrease epsilon
-        if(train)
-            network.epsilon = std::max(network.epsilon, 0.0);
+        if(train) {
+
+            network.epsilon -= network.epsilon / 750000;       // gradually decrease epsilon
+
+            network.epsilon = std::max(network.epsilon, 0.0); // in training, set the minimum epsilon to a small
+                                                               // non-zeroo value, to continue exploration and
+                                                               // avoid getting stuck on local minima
+        }
+
 
         if(train) {
             auto batch = buffer.sampleBatch();
@@ -235,8 +241,7 @@ void updateSnake(Snake& s, Network& network, ReplayBuffer& buffer, bool train) {
 
 }
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
 
     std::string mode;
     bool train = false;
@@ -316,7 +321,13 @@ int main(int argc, char* argv[])
         window.create(sf::VideoMode(WINDOW_SIZE, WINDOW_SIZE), "snake");
         window.setFramerateLimit(frameRate);
     }
-    
+
+    if (!train) {
+        std::cout << "The mode is 'play', so the network won't change.\n";
+        std::cout << "If you wish to train your network, set --mode to train.\n";
+        network.epsilon = 0;
+        std::cout << "The epsilon is automatically set to 0 (since it's mode play)\n";
+    }
 
     //print infos
     std::cout << "\n-------------------------------------\n";
@@ -327,12 +338,7 @@ int main(int argc, char* argv[])
     std::cout << "Path: --------------------  " << path << "\n";
     std::cout << "-------------------------------------\n";
 
-    if(!train) {
-        std::cout << "The mode is 'play', so the network won't change.\n";
-        std::cout << "If you wish to train your network, set --mode to train.\n";
-        network.epsilon = 0;
-        std::cout << "The epsilon is automatically set to 0 (since it's mode play)\n";
-    }
+    
 
     //game loop
     while (true) {

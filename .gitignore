@@ -2,5 +2,5 @@
 *.o
 *.dll
 *.py
-*.txt
+/*.txt
 *.exe

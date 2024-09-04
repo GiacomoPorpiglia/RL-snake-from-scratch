@@ -18,12 +18,14 @@ class Layer {
         int layerIdx;
         LayerType layerType;
         std::vector<std::vector<double>> weights;
+        std::vector<std::vector<double>> weightGradients;
+
+        std::vector<double> biases;
+        std::vector<double> biasesGradients;
         
         std::vector<double> outputs;
         std::vector<double> inputs;
         std::vector<double> nodeValues;
-
-        std::vector<std::vector<double>> gradients;
 
         Adam optimizer;
 
@@ -35,18 +37,23 @@ class Layer {
             outputs.resize(n_outputs);
             inputs.resize(n_inputs);
 
+            biases.resize(n_outputs);
+            biasesGradients.resize(n_outputs);
+            std::fill(biases.begin(), biases.end(), 0); //initialize biases at 0
+
             nodeValues.resize(n_outputs);
 
             optimizer = Adam(n_inputs, n_outputs, 0.9, 0.999, 1e-8, 0, layerIdx);
 
+            //He weight initialization
             std::random_device rd;
             std::default_random_engine generator(rd());
             std::normal_distribution<double> distribution(0, sqrt(2/(double)n_inputs));
             weights.resize(n_inputs);
-            gradients.resize(n_inputs);
+            weightGradients.resize(n_inputs);
             for(int i = 0; i < n_inputs; i++) {
                 weights[i].resize(n_outputs);
-                gradients[i].resize(n_outputs);
+                weightGradients[i].resize(n_outputs);
                 for(int j = 0; j < n_outputs; j++) {
                     //Initialize random weights
                     weights[i][j] = distribution(generator);
@@ -56,8 +63,9 @@ class Layer {
 
         void resetGradients() {
             for(int i = 0; i < n_inputs; i++) {
-                std::fill(gradients[i].begin(), gradients[i].end(), 0);
+                std::fill(weightGradients[i].begin(), weightGradients[i].end(), 0);
             }
+            std::fill(biasesGradients.begin(), biasesGradients.end(), 0);
         }
 
 
@@ -67,10 +75,16 @@ class Layer {
 
             std::fill(outputs.begin(), outputs.end(), 0);
 
+
             for(int i = 0; i < inputs.size(); i++) {
                 for(int j = 0; j < outputs.size(); j++) {
                     outputs[j] += inputs[i] * weights[i][j];   
                 }
+            }
+
+            //add the biases
+            for(int i = 0; i < n_outputs; i++) {
+                outputs[i] += biases[i];
             }
 
             if(layerType == HIDDEN) {
@@ -115,20 +129,26 @@ class Layer {
         void updateGradients() {
             for(int i = 0; i < n_inputs; i++) {
                 for(int j = 0; j < n_outputs; j++) {
-                    gradients[i][j] += inputs[i] * nodeValues[j];
+                    weightGradients[i][j] += inputs[i] * nodeValues[j];
                 }
+            }
+            for(int i = 0; i < n_outputs; i++) {
+                biasesGradients[i] += nodeValues[i];
             }
         }
 
 
         void applyGradients(double learnRate) {
       
-            optimizer.optimize(gradients);
+            optimizer.optimize(weightGradients, biasesGradients);
 
             for(int i = 0; i < n_inputs; i++) {
                 for(int j = 0; j < n_outputs; j++) {
-                    weights[i][j] -= gradients[i][j] * learnRate;
+                    weights[i][j] -= weightGradients[i][j] * learnRate;
                 }
+            }
+            for(int i = 0; i < n_outputs; i++) {
+                biases[i] -= biasesGradients[i] * learnRate;
             }
         }
 
@@ -149,23 +169,30 @@ class Layer {
                 }
                 outFile << std::endl;
             }
+
+            for(int i = 0; i < n_outputs; i++) {
+                if(outFile.is_open()) {
+                    outFile << biases[i] << " ";
+                }
+            }
+            outFile << std::endl;
+
             std::cout << "Layer saved successfully\n";
             outFile.close();
         }
 
-
         void load(int idx, std::string path) {
             std::ifstream inFile(path + "/layer" + std::to_string(idx) + ".txt");
             if (!inFile) {
-                std::cerr << "Error: Could not open file" << path << "/layer" << idx << ".txt for reading. initializing random layer..." << std::endl;
+                std::cerr << "Error: Could not open file " << path << "/layer" << idx << ".txt for reading. Initializing random layer..." << std::endl;
                 return;
             }
-
+            
             std::string line;
             int i = 0; // Row index for weights
 
-            // Read the file line by line
-            while (std::getline(inFile, line) && i < n_inputs) {
+            // Read the file line by line for weights
+            while (i < n_inputs && std::getline(inFile, line)) {
                 std::istringstream iss(line);
                 for (int j = 0; j < n_outputs; ++j) {
                     if (!(iss >> weights[i][j])) {
@@ -174,6 +201,25 @@ class Layer {
                     }
                 }
                 ++i;
+            }
+
+            // Debugging: Check current file position and EOF state
+            if (inFile.eof()) {
+                std::cerr << "Error: End of file reached before reading biases." << std::endl;
+                return;
+            }
+
+            // Read the biases from the last line
+            if(std::getline(inFile, line)) {
+                std::istringstream iss(line);
+                for(int i = 0; i < n_outputs; i++) {
+                    if(!(iss >> biases[i])) {
+                        std::cerr << "Error: Failed to read bias at position [" << i << "]" << std::endl;
+                        return;
+                    }
+                }
+            } else {
+                std::cerr << "Error: No line found for biases, current file position: " << inFile.tellg() << std::endl;
             }
 
             inFile.close();
