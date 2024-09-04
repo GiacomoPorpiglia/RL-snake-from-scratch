@@ -38,7 +38,7 @@ I also run about 10000 games of playing to have a estimate of the score distribu
 
 <img alt="Score distribution" src="./imgs/distribution.png" style="width:80%;">
 <br>
-As you can see, the average is around 30, which I'm happy with, considering that it could be trained a lot more.
+As you can see, the average is around 35, which I'm happy with, considering that it could be trained a lot more.
 <br>
 Now take a look at an example of game:
 <br><br>
