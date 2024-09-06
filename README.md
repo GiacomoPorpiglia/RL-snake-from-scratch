@@ -66,9 +66,9 @@ Some examples of usage are:
 
 ```
 .\RLsnake.exe --mode play --path ./net
-
+```
 or 
-
+```
 .\RLsnake.exe --mode train --epsilon 0.1 --learnrate 0.001 --batchsize 64 --path ./net
 ```
 
