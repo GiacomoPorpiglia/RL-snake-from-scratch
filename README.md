@@ -33,7 +33,7 @@ It's amazing to see how from this simple immediate rewards the network is able t
 The results are promising, and they would probably be even better with some more training.
 The network played roughly 3,000,000 games, reaching a best score of 64 on training. While the number of games may seem like a lot, it's actually not that much, and I encourage you to try and train your own network by running more games, if you can!
 <br>
-I also run about 10000 games of playing to have a estimate of the score distribution, and this is the result:
+I also run about 20,000 games to have a estimate of the score distribution, and this is the result:
 <br>
 
 <img alt="Score distribution" src="./imgs/distribution.png" style="width:80%;">
@@ -56,11 +56,11 @@ make
 ```
 
 To execute, there are several flags to choose several network parameters and more:
-- --mode : (required) The possible values are 'train' and 'play'. If train, you will train the network (a new or an existing one), if play, you can watch an existing network play.
-- --epsilon : The possible values are float between 0 and 1. It sets the starting epsilon value for epsilon-greedy policy (default: 0.2).
-- --learnrate : The possible values have to be greater than 0. It sets the learning rate for the nwteork (default: 0.001)
-- --batchsize : The possible values are integers greater than 0. It sets the batch size for the training (default: 64)
-- --path : (required) The path, relative or absolute, of where you want to save or load the network. Automatically, if in that path a network already exists, it will be loaded. If not, a new network will be initialized.
+- ```--mode``` : (required) The possible values are 'train' and 'play'. If train, you will train the network (a new or an existing one), if play, you can watch an existing network play.
+- ```--epsilon```: The possible values are float between 0 and 1. It sets the starting epsilon value for epsilon-greedy policy (default: 0.2).
+- ```--learnrate``` : The possible values have to be greater than 0. It sets the learning rate for the nwteork (default: 0.001)
+- ```--batchsize``` : The possible values are integers greater than 0. It sets the batch size for the training (default: 64)
+- ```--path``` : (required) The path, relative or absolute, of where you want to save or load the network. Automatically, if in that path a network already exists, it will be loaded. If not, a new network will be initialized.
 
 Some examples of usage are:
 
@@ -69,7 +69,7 @@ Some examples of usage are:
 ```
 or 
 ```
-.\RLsnake.exe --mode train --epsilon 0.1 --learnrate 0.001 --batchsize 64 --path ./net
+.\RLsnake.exe --mode train --epsilon 0.2 --learnrate 0.001 --batchsize 64 --path ./net
 ```
 
 

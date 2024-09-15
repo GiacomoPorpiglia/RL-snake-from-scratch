@@ -7,6 +7,8 @@
 #include <sstream>
 #include "types.h"
 #include "Adam.h"
+#include <immintrin.h>
+
 
 
 class Layer {
@@ -104,7 +106,7 @@ class Layer {
             return nodeValues;
         }
 
-        std::vector<double>& hiddenLayerNodeValues(Layer& oldLayer, std::vector<double>& oldNodeValues) {
+        std::vector<double>& hiddenLayerNodeValues(Layer& nextLayer, std::vector<double>& nextLayerNodeValues) {
 
             std::vector<double> activationDerivatives = outputs;
             for(double& x : activationDerivatives) {
@@ -112,10 +114,10 @@ class Layer {
                 else x = 0;
             }
 
-            for(int i = 0; i < oldLayer.n_inputs; i++) {
+            for(int i = 0; i < nextLayer.n_inputs; i++) {
                 double nodeValue = 0;
-                for(int j = 0; j < oldLayer.n_outputs; j++) {
-                    nodeValue += oldLayer.weights[i][j] * oldNodeValues[j];
+                for(int j = 0; j < nextLayer.n_outputs; j++) {
+                    nodeValue += nextLayer.weights[i][j] * nextLayerNodeValues[j];
                 }
 
                 nodeValue *= activationDerivatives[i];

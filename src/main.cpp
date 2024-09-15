@@ -9,6 +9,8 @@
 #include <random>
 #include <fstream>
 
+// 0.00387932
+
 int counter = 0;
 
 void drawFrame(sf::RenderWindow& window, Snake& s) {
@@ -134,8 +136,8 @@ void updateSnake(Snake& s, Network& network, ReplayBuffer& buffer, bool train) {
 
 
     State currentState = getState(s);
-    //compute network output
 
+    //compute network output
     std::vector<double> outputs = network.forward(currentState.state);
 
 
@@ -306,13 +308,13 @@ int main(int argc, char* argv[]) {
 
     Snake snake;
     snake = initSnake(snake);
-    int frameRate = 10;
+    int frameRate = 60;
 
 
 
-    std::vector<int> networkSizes = {9, 100, 50, 3}; //net size
-    Network network = Network(networkSizes, epsilon, learnRate, path);      // init network
-    ReplayBuffer buffer = ReplayBuffer(batchSize);         // init buffer
+    std::vector<int> networkSizes = {9, 128, 128, 3};                  //net architecture
+    Network network = Network(networkSizes, epsilon, learnRate, path); // init network
+    ReplayBuffer buffer = ReplayBuffer(batchSize);                     // init buffer
 
     sf::RenderWindow window;
     if(!train) {
@@ -350,15 +352,14 @@ int main(int argc, char* argv[]) {
                 if (event.type == sf::Event::KeyPressed) {
                     if (event.key.code == sf::Keyboard::F) {
                         // Toggle the frame rate
-                        frameRate = (frameRate == 60) ? 10 : 60;
+                        frameRate = (frameRate == 60) ? 30 : 60;
                         window.setFramerateLimit(frameRate);
                     }
                 }
             }
         }
 
-        
-        
+              
         if(!train)
             window.clear();
 
