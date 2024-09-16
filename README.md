@@ -7,7 +7,7 @@ Specifically, <b>I used Q-Learning as RL algorithm.</b>
 <br>
 <b>The entire code is written in pure C++, without the use of any ML libraries.</b>
 <br>
-The code is in the 'coding' folder, while in the src there are some SFML dipendencies (the library I used for graphics).
+The code is in the 'src' folder, while in the 'coding' folder there are some SFML dipendencies (the library I used for graphics).
 
 ## Training
 To train the network, I used an <b>epsilon-greedy policy</b> (also known as curiosity based exploration): we set a value epsilon between 0 and 1, and this is the probability of choosing a random action, instead of the best one that the network suggests. This way, we can explore the environment more and learn faster, especially in the initial steps of the training.
@@ -16,8 +16,8 @@ I also used the <b>Adam optimizer paired with backpropagation</b>, which resulte
 <br>
 The netowrk I used consists of:
 -  9 inputs
-- One hidden layer with 100 neurons
-- One hidden layer with 50 neurons
+- One hidden layer with 128 neurons
+- One hidden layer with 128 neurons
 - The output layer with 3 neurons (for left, forward and right actions).
 <br>
 
